@@ -26,7 +26,11 @@ class ColorPaletteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         dominant_colors_data = validated_data.pop('dominant_colors')
+        if len(dominant_colors_data) < 1 or len(dominant_colors_data) > 2:
+            raise ValidationError("Should have at least one dominant color and not more than two")
         accent_colors_data = validated_data.pop('accent_colors')
+        if len(accent_colors_data) < 2 or len(accent_colors_data) > 4:
+            raise ValidationError("Should have at least two accent color and not more than four")
         color_palette = ColorPalette.objects.create(**validated_data)
         for dominant_color_data in dominant_colors_data:
             DominantColor.objects.create(color_palette=color_palette, **dominant_color_data)
