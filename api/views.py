@@ -39,9 +39,6 @@ class AddFavouriteViewset(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        favourite_queryset = FavouritePalette.objects.filter(user=user)
-        if favourite_queryset.exists():
-            raise ValidationError("You have already created your favourite list you can update or delete your list")
         serializer.save(user=user)
 
     def get_queryset(self):

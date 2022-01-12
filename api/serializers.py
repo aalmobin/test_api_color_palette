@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from . models import ColorPalette, FavouritePalette, DominantColor, AccentColor
 
 
@@ -40,3 +41,11 @@ class FavouritePaletteSerializer(serializers.ModelSerializer):
         model = FavouritePalette
         fields = '__all__'
         extra_kwargs = {'user': {'read_only': True}}
+
+    def create(self, validated_data):
+        favorite_palettes = validated_data['favorite_palettes']
+        favourite_queryset = FavouritePalette.objects.filter(favorite_palettes=favorite_palettes)
+        if favourite_queryset.exists():
+            raise ValidationError("You have already added this color palette in your favorite list")
+        favourite_palettes = FavouritePalette.objects.create(**validated_data)
+        return favourite_palettes
