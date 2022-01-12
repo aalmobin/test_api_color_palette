@@ -13,7 +13,7 @@ class ColorPaletteListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ColorPalette.objects.filter(is_public=True)
     serializer_class = ColorPaletteSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name','dominant_color', 'accent_color')
+    search_fields = ('name',)
 
 
 class ColorPaletteViewset(viewsets.ModelViewSet):
